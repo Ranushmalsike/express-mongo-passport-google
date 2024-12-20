@@ -43,8 +43,8 @@ app.use(
     })
 );
 
-  // app.use(Passport.initialize());
-  // app.use(Passport.session());
+  app.use(passport.initialize());
+  app.use(passport.session());
 
 app.get('/', (req, res) => {
     console.log(req.session);
@@ -59,12 +59,22 @@ app.get('/', (req, res) => {
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
+// redirect option route
 app.get('/auth/google/redirect', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+    console.log('Authentication successful:', req.user);
+    res.redirect('/profile'); // Ensure correct path
   });
+
+// last destination of redirect route
+  app.get('/profile', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send(`Hello, ${req.user.name}`);
+  } else {
+    res.redirect('/login');
+  }
+});
 
 // Input values into database
 app.post('/user/api', checkSchema(uservalidation), async (req, res) => {

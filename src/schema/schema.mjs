@@ -6,12 +6,18 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
+  // password: {
+  //   type: String,
+  //   required: true,
+  // },
+  google:{
+    type : String,
     required: true,
+    unique: true
   },
 });
 
+// export default mongoose.model("User", UserSchema);
 export default mongoose.model("User", UserSchema);
 
 // This section introduction the column validation and setting in database
